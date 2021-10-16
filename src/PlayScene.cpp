@@ -209,8 +209,8 @@ void PlayScene::GUI_Function()
 	//ImGui::SliderFloat("Gravity", &gravity, -25.f, 25.f, "%.3f");
 	ImGui::SliderFloat("Rise", &rise, 0.f, 10.f, "%.3f");
 	ImGui::SliderFloat("Run", &run, 0.f, 10.f, "%.3f");
+	ImGui::SliderFloat("PPM", &scale, 5.f, 60.f, "%.1f");
 	ImGui::SliderFloat("Mass", &mass, 0.f, 50.f, "%.3f");
-	ImGui::SliderFloat("Scale", &scale, 5.f, 60.f, "%.1f");
 
 	ImGui::End();
 }

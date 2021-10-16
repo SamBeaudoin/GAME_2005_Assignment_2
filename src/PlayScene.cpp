@@ -27,16 +27,16 @@ void PlayScene::draw()
 	for (int i = 0; i <= Config::SCREEN_HEIGHT - 150;)
 	{
 		SDL_RenderDrawLine(Renderer::Instance().getRenderer(), 0, 0 + i, Config::SCREEN_WIDTH, 0 + i);
-		i += 50;
+		i += scale;
 	}
 
 	for (int i = 0; i <= Config::SCREEN_WIDTH;)
 	{
 		SDL_RenderDrawLine(Renderer::Instance().getRenderer(), 0 + i, 0, 0 + i, Config::SCREEN_HEIGHT - 150);
-		i += 50;
+		i += scale;
 	}
 	SDL_SetRenderDrawColor(Renderer::Instance().getRenderer(), 0, 0, 0, 1);
-	SDL_RenderDrawLine(Renderer::Instance().getRenderer(), 0, Ground-150, 200, Ground);
+	SDL_RenderDrawLine(Renderer::Instance().getRenderer(), 0, Ground-(scale*rise), scale*run, Ground);
 	SDL_SetRenderDrawColor(Renderer::Instance().getRenderer(), 0, 0, 0, 255);
 	SDL_RenderDrawLine(Renderer::Instance().getRenderer(), 0, Ground, Config::SCREEN_WIDTH, Ground);
 
@@ -45,30 +45,35 @@ void PlayScene::draw()
 
 void PlayScene::update()
 {
-	updateDisplayList();
+
 	float dt = Game::Instance().getDeltaTime();
 	t += dt;
-	
-	updateDisplayList();
-	if (Y <= Ground && Launch)
+	StartY = Ground - (scale * rise);
+	std::cout << RampAngle << std::endl;
+	std::cout << Acceleration << std::endl;
+	if (Y < Ground)
 	{
 		std::cout << "Current Time: " << t << std::endl;
 		m_pTimeLabel->setText("Time: " + std::to_string(t) + "s");
-		m_pDisplacementLabel->setText("Displacement: " + std::to_string(X - StartX) + "m");
-		Velocity.x = launchSpeed * cos(radians);
-		Velocity.y = (launchSpeed * sin(radians)) - (gravity * t);
-		X += Velocity.x * dt;
-		Y += Velocity.y * dt;
+		Acceleration = (gravity)*sin(RampAngle);
+		Velocity.x += Acceleration * cos(RampAngle) * dt;
+		Velocity.y += Acceleration * sin(RampAngle) * dt;
+		X += Velocity.x * dt * scale;
+		Y += Velocity.y * dt * scale;
+	}
+	else if(Velocity.x > 0){
+		std::cout << "Current Time: " << t << std::endl;
+		m_pTimeLabel->setText("Time: " + std::to_string(t) + "s");
+		Acceleration = -(gravity * 0.42f);
+		Velocity.x += Acceleration * cos(RampAngle) * dt;
+		Y = Ground;
+		X += Velocity.x * dt * scale;
 	}
 	else {
-		if (Launch) {
-			Launch = false;
-			std::cout << "Final Time: " << t <<" Displacement: " << X - StartX << std::endl;
-		}
-		
 	}
-	
+	m_pDistanceLabel->setText("Distance (X): " + std::to_string((X - StartX) / scale) + "m");
 	m_pProjectile->getTransform()->position = glm::vec2(X, Y);
+	updateDisplayList();
 }
 
 void PlayScene::clean()
@@ -90,8 +95,8 @@ void PlayScene::handleEvents()
 		t = 0;
 		X = StartX;
 		Y = StartY;
-		radians = (M_PI / 180) * -angle;
-		Velocity = glm::vec2(launchSpeed * cos(radians), launchSpeed * sin(radians));
+		RampAngle = atan(rise / run);
+		Velocity = glm::vec2(0.0, 0.0);
 		Launch = true;
 		Launching = false;
 
@@ -124,6 +129,7 @@ void PlayScene::start()
 	m_pProjectile = new Bob();
 	addChild(m_pProjectile);
 	m_pProjectile->getTransform()->position = glm::vec2(X, Y);
+
 
 	// Back Button
 	m_pBackButton = new Button("../Assets/textures/backButton.png", "backButton", BACK_BUTTON);
@@ -179,9 +185,9 @@ void PlayScene::start()
 	m_pTimeLabel->getTransform()->position = glm::vec2(Config::SCREEN_WIDTH * 0.25f, 475.0f);
 	addChild(m_pTimeLabel);
 
-	m_pDisplacementLabel = new Label("Displacement: 0.000m", "Consolas");
-	m_pDisplacementLabel->getTransform()->position = glm::vec2(Config::SCREEN_WIDTH * 0.75f, 475.0f);
-	addChild(m_pDisplacementLabel);
+	m_pDistanceLabel = new Label("Distance (X): 0.000m", "Consolas");
+	m_pDistanceLabel->getTransform()->position = glm::vec2(Config::SCREEN_WIDTH * 0.75f, 475.0f);
+	addChild(m_pDistanceLabel);
 
 	
 
@@ -200,9 +206,11 @@ void PlayScene::GUI_Function()
 	
 	ImGui::Begin("Controls", NULL, ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoMove);
 
-	ImGui::SliderFloat("Angle", &angle, 15.8896511182f, 74.1103854757f, "%.5f");
-	ImGui::SliderFloat("Launch Speed", &launchSpeed, 0.f, 250.f, "%.3f");
-	ImGui::SliderFloat("Gravity", &gravity, -25.f, 25.f, "%.3f");
+	//ImGui::SliderFloat("Gravity", &gravity, -25.f, 25.f, "%.3f");
+	ImGui::SliderFloat("Rise", &rise, 0.f, 10.f, "%.3f");
+	ImGui::SliderFloat("Run", &run, 0.f, 10.f, "%.3f");
+	ImGui::SliderFloat("Mass", &mass, 0.f, 50.f, "%.3f");
+	ImGui::SliderFloat("Scale", &scale, 5.f, 60.f, "%.1f");
 
 	ImGui::End();
 }

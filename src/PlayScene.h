@@ -31,14 +31,16 @@ private:
 	Bob* m_pProjectile;
 
 	float t = 0;
-	float gravity = -9.8;
-	float angle = 74.1103854757f;
-	float radians = (M_PI / 180) * -angle;
-	float launchSpeed = 95;
-	glm::vec2 Velocity = glm::vec2(launchSpeed*cos(radians), launchSpeed * sin(radians));
-	float StartX = 50, StartY = 450;
-	float X = StartX, Y = StartY;
+	float gravity = 9.8f;
+	float rise = 3, run = 4;
+	float RampAngle = atan(rise / run);
+	float Acceleration = (gravity) * sin(RampAngle);
 	float Ground = 450;
+	float scale = 50;
+	glm::vec2 Velocity = glm::vec2(0.0, 0.0);
+	float StartX = 0, StartY = Ground - (scale*3);
+	float X = StartX, Y = StartY;
+	float mass = 12.8;
 	bool Launch = false;
 	bool Launching = false;
 
@@ -48,7 +50,7 @@ private:
 	Label* m_pInstructionsLabel;
 	Label* m_pInstructionsLabel2;
 	Label* m_pTimeLabel;
-	Label* m_pDisplacementLabel;
+	Label* m_pDistanceLabel;
 };
 
 #endif /* defined (__PLAY_SCENE__) */

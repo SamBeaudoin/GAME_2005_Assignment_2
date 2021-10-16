@@ -3,7 +3,7 @@
 
 Bob::Bob()
 {
-	TextureManager::Instance().load("../Assets/textures/sled.png", "ship");
+	TextureManager::Instance().load("../Assets/textures/grenade.png", "ship");
 
 	auto size = TextureManager::Instance().getTextureSize("ship");
 	setWidth(size.x);

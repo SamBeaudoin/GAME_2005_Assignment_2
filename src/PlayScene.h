@@ -38,6 +38,7 @@ private:
 	glm::vec2 Velocity = glm::vec2(launchSpeed*cos(radians), launchSpeed * sin(radians));
 	float StartX = 50, StartY = 450;
 	float X = StartX, Y = StartY;
+	float Ground = 450;
 	bool Launch = false;
 	bool Launching = false;
 

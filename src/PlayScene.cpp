@@ -35,9 +35,10 @@ void PlayScene::draw()
 		SDL_RenderDrawLine(Renderer::Instance().getRenderer(), 0 + i, 0, 0 + i, Config::SCREEN_HEIGHT - 150);
 		i += 50;
 	}
-
+	SDL_SetRenderDrawColor(Renderer::Instance().getRenderer(), 0, 0, 0, 1);
+	SDL_RenderDrawLine(Renderer::Instance().getRenderer(), 0, Ground-150, 200, Ground);
 	SDL_SetRenderDrawColor(Renderer::Instance().getRenderer(), 0, 0, 0, 255);
-	SDL_RenderDrawLine(Renderer::Instance().getRenderer(), 0, StartY, Config::SCREEN_WIDTH, StartY);
+	SDL_RenderDrawLine(Renderer::Instance().getRenderer(), 0, Ground, Config::SCREEN_WIDTH, Ground);
 
 	SDL_SetRenderDrawColor(Renderer::Instance().getRenderer(), 255, 255, 255, 255);
 }
@@ -49,7 +50,7 @@ void PlayScene::update()
 	t += dt;
 	
 	updateDisplayList();
-	if (Y <= StartY && Launch)
+	if (Y <= Ground && Launch)
 	{
 		std::cout << "Current Time: " << t << std::endl;
 		m_pTimeLabel->setText("Time: " + std::to_string(t) + "s");

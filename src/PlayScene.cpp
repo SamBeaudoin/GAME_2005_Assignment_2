@@ -55,9 +55,9 @@ void PlayScene::update()
 	{
 		std::cout << "Current Time: " << t << std::endl;
 		m_pTimeLabel->setText("Time: " + std::to_string(t) + "s");
-		Acceleration = (gravity)*sin(RampAngle);
-		Velocity.x += Acceleration * cos(RampAngle) * dt;
-		Velocity.y += Acceleration * sin(RampAngle) * dt;
+		Acceleration = (gravity)*sin(RampAngle);						// speed
+		Velocity.x += Acceleration * cos(RampAngle) * dt;				// x component down the ramp
+		Velocity.y += Acceleration * sin(RampAngle) * dt;				// y component down the ramp
 		X += Velocity.x * dt * scale;
 		Y += Velocity.y * dt * scale;
 	}
@@ -99,8 +99,6 @@ void PlayScene::handleEvents()
 		Velocity = glm::vec2(0.0, 0.0);
 		Launch = true;
 		Launching = false;
-
-
 	}
 	
 

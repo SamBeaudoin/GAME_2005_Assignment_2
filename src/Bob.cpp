@@ -3,11 +3,12 @@
 
 Bob::Bob()
 {
-	TextureManager::Instance().load("../Assets/textures/grenade.png", "ship");
+	TextureManager::Instance().load("../Assets/textures/Crate.png", "ship");
 
 	auto size = TextureManager::Instance().getTextureSize("ship");
 	setWidth(size.x);
-	setHeight(size.y);
+	setHeight(size.y); 
+	m_Angle = 36;
 }
 
 Bob::~Bob()
@@ -15,7 +16,7 @@ Bob::~Bob()
 
 void Bob::draw()
 {
-	TextureManager::Instance().draw("ship", getTransform()->position.x, getTransform()->position.y, 0, 255, true);
+	TextureManager::Instance().draw("ship", getTransform()->position.x, getTransform()->position.y - 17, m_Angle, 255, true);
 }
 
 void Bob::update()
@@ -24,5 +25,10 @@ void Bob::update()
 
 void Bob::clean()
 {
+}
+
+void Bob::SetAngle(int val)
+{
+	m_Angle = val;
 }
 

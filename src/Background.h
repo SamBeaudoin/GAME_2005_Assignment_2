@@ -1,22 +1,20 @@
 #pragma once
-#ifndef __BOB__
-#define __BOB__
+#ifndef __Background__
+#define __Background__
 
 #include "Sprite.h"
 
-class Bob final : public Sprite
+class Background final : public Sprite
 {
 public:
-	Bob();
-	~Bob();
+	Background();
+	~Background();
 
 	// Life Cycle Functions
 	virtual void draw() override;
 	virtual void update() override;
 	virtual void clean() override;
 
-	void SetAngle(int val);
-	int m_Angle;
 };
 
-#endif /* defined (__BOB__) */
+#endif /* defined (__Background__) */

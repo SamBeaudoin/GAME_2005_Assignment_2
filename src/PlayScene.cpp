@@ -60,6 +60,7 @@ void PlayScene::update()
 		Velocity.y += Acceleration * sin(RampAngle) * dt;				// y component down the ramp
 		X += Velocity.x * dt * scale;
 		Y += Velocity.y * dt * scale;
+		m_pProjectile->SetAngle(36);
 	}
 	else if(Velocity.x > 0){
 		std::cout << "Current Time: " << t << std::endl;
@@ -68,6 +69,7 @@ void PlayScene::update()
 		Velocity.x += Acceleration * cos(RampAngle) * dt;
 		Y = Ground;
 		X += Velocity.x * dt * scale;
+		m_pProjectile->SetAngle(0);
 	}
 	else {
 	}
@@ -124,6 +126,11 @@ void PlayScene::start()
 	m_guiTitle = "Play Scene";
 	std::cout << std::setprecision(2) << std::fixed;
 	
+	// Background
+	m_pBackGround = new Background();
+	addChild(m_pBackGround);
+
+	// Object
 	m_pProjectile = new Bob();
 	addChild(m_pProjectile);
 	m_pProjectile->getTransform()->position = glm::vec2(X, Y);

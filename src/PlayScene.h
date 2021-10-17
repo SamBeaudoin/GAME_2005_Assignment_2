@@ -8,6 +8,7 @@
 #include "Bob.h"
 #include "Button.h"
 #include "Label.h"
+#include "Background.h"
 
 class PlayScene : public Scene
 {
@@ -29,6 +30,7 @@ private:
 	glm::vec2 m_mousePosition;
 
 	Bob* m_pProjectile;
+	Background* m_pBackGround;
 
 	float t = 0;
 	float gravity = 9.8f;
